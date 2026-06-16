@@ -49,7 +49,7 @@ function actualizar(){
     document.getElementById("msg").innerHTML =
         "Ejecutando actualización...";
 
-    fetch("AQUI_VA_TU_URL_DE_APPS_SCRIPT")
+    fetch("https://script.google.com/macros/s/AKfycbycIfk2I_8g5FO7RKHuHH7N9GKuAPAViLaGDFR8o2v0UZLW3DxThvCC19lo03ZaWf0/exec")
         .then(r => r.text())
         .then(data => {
             document.getElementById("msg").innerHTML =
