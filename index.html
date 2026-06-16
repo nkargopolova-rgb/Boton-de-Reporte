@@ -3,64 +3,46 @@
 <head>
 <meta charset="utf-8">
 <title>Actualizar Reporte Navixy</title>
-
 <style>
-body{
-    font-family: Arial, sans-serif;
-    text-align:center;
-    margin-top:80px;
-}
-
-button{
-    background:#f5b800;
-    color:#000;
-    border:none;
-    padding:15px 30px;
-    font-size:18px;
-    border-radius:8px;
-    cursor:pointer;
-}
-
-button:hover{
-    opacity:.9;
-}
-
-#msg{
-    margin-top:20px;
-    font-size:16px;
-}
+body{font-family:Arial,sans-serif;text-align:center;margin-top:70px}
+button,a{display:inline-block;background:#f5b800;color:#000;border:none;padding:15px 30px;font-size:18px;border-radius:8px;cursor:pointer;text-decoration:none;margin:8px}
+button:disabled{opacity:.6;cursor:not-allowed}
+#msg{margin-top:20px;font-size:18px}
+#fecha{margin-top:10px;color:#555}
 </style>
-
 </head>
 <body>
 
 <h2>Reporte Nucleo</h2>
 
-<button onclick="actualizar()">
-🔄 Actualizar Reporte
-</button>
+<button id="btn" onclick="actualizar()">🔄 Actualizar Reporte</button>
+<a href="URL_DEL_REPORTE_PUBLICADO" target="_blank">📊 Abrir Reporte</a>
 
 <div id="msg"></div>
+<div id="fecha"></div>
 
 <script>
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbycIfk2I_8g5FO7RKHuHH7N9GKuAPAViLaGDFR8o2v0UZLW3DxThvCC19lo03ZaWf0/exec";
 
 function actualizar(){
+  const btn = document.getElementById("btn");
+  btn.disabled = true;
+  document.getElementById("msg").innerHTML = "⏳ Actualizando reporte...";
 
-    document.getElementById("msg").innerHTML =
-        "Ejecutando actualización...";
-
-    fetch("https://script.google.com/macros/s/AKfycbycIfk2I_8g5FO7RKHuHH7N9GKuAPAViLaGDFR8o2v0UZLW3DxThvCC19lo03ZaWf0/exec")
-        .then(r => r.text())
-        .then(data => {
-            document.getElementById("msg").innerHTML =
-                "✅ Reporte actualizado correctamente";
-        })
-        .catch(err => {
-            document.getElementById("msg").innerHTML =
-                "❌ Error al actualizar";
-        });
+  fetch(APPS_SCRIPT_URL)
+    .then(r => r.text())
+    .then(() => {
+      document.getElementById("msg").innerHTML = "✅ Reporte actualizado correctamente";
+      document.getElementById("fecha").innerHTML =
+        "Última actualización: " + new Date().toLocaleString();
+    })
+    .catch(() => {
+      document.getElementById("msg").innerHTML = "❌ Error al actualizar";
+    })
+    .finally(() => {
+      btn.disabled = false;
+    });
 }
-
 </script>
 
 </body>
